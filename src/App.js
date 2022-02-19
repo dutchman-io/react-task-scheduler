@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
+
 import {useState} from 'react'
 import Task from "./components/Tasks"
 
@@ -7,7 +8,8 @@ import Header from "./components/Header"
 import AddTask from './components/AddTask'
 
 function App() {
-  const  [tasks, setTasks] = useState([
+  const [showAddTask, setShowAddTask] =useState(false)
+  const [tasks, setTasks] = useState([
     {
         id : 1,
         text : "Doctors Appointment ",
@@ -53,20 +55,31 @@ function App() {
     
   )
 
-  }
   
+  }
+
+
+  //Add task
+  const addTask =(task) => {
+    const id = Math.floor(Math.random()*1000 + 1)
+    const newTask = {id, ...task}
+    setTasks([...tasks, newTask])
+
+  } 
+
    
   return (
 
 
     <div className="container">
-      <Header/>
-      <AddTask />
+      <Header onAdd ={() => setShowAddTask(!showAddTask)} showAdd ={showAddTask} />
+      {/* A way of showing a tenary operator without then--> */}
 
+      {showAddTask && <AddTask  onAdd = {addTask} />} 
       {tasks.length > 0 ? (
-      <Task tasks = {tasks}
-
-      onDelete ={deleteTask} onToggle = {toggleReminder} 
+      <Task tasks = {tasks} 
+      onDelete ={deleteTask} 
+      onToggle = {toggleReminder} 
       />) : (
         'There is no Task to show'
       )}
